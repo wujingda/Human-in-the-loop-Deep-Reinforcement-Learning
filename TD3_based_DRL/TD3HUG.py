@@ -120,7 +120,7 @@ class DRL:
 
                         # calculate the final weights
                         lam = 0.997 ** epoch # lambda is the soft update coefficient
-                        weights = lam * 4 + (1-lam) * (torch.exp(weights)) * 4
+                        weights = lam * 3 + (1-lam) * (torch.exp(weights)) * 3
                     
                     # calculate the human-guidance loss
                     loss_actor2 = weights * ((pred_a2 - ba2)**2)
@@ -139,7 +139,7 @@ class DRL:
 
                         # calculate the final weights
                         lam = 0.997 ** epoch # lambda is the soft update coefficient
-                        weights = lam * 4 + (1-lam) * (torch.exp(weights)) * 4
+                        weights = lam * 3 + (1-lam) * (torch.exp(weights)) * 3
                     
                     # calculate the final loss
                     loss_actor = weights * ((pred_a - ba)**2)
