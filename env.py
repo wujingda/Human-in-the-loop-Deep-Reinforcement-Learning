@@ -38,7 +38,7 @@ class scenario(object):
                  no_render=False, frame=25):
 
         self.observation_size_width = WIDTH
-        self.observation_sizeheight = HEIGHT
+        self.observation_size_height = HEIGHT
         self.observation_size = WIDTH * HEIGHT
         self.action_size = 1
 
