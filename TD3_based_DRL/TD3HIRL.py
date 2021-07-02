@@ -1,7 +1,7 @@
 '''
 This algorithm is a HI-RL implementation based on an off-policy TD3 algorithm.
 To check the original HI-RL algorithm (based on DDQN), you can refer to https://arxiv.org/abs/1707.05173.
-Since TD3HI is a baseline algorithm, the annotations are mostly omitted, please visit the HUGTD3.py for more details.
+Since TD3HIRL is a baseline algorithm, the annotations are mostly omitted, please visit the TD3HUG.py for more details.
 '''
 import pickle
 import numpy as np
