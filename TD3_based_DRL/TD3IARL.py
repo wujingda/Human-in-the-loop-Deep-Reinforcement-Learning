@@ -130,9 +130,9 @@ class DRL:
             soft_update(self.actor_target,self.actor,self.tau)
             soft_update(self.critic_target,self.critic,self.tau)
 
-            loss_a = loss_actor.sum().item()
+            loss_a = loss_actor.mean().item()
 
-        loss_c = loss_critic.sum().item()
+        loss_c = loss_critic.mean().item()
         
         self.itera += 1
         
