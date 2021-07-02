@@ -10,7 +10,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from TD3_based_DRL.priority_Replay import Memory
+from TD3_based_DRL.priority_replay import Memory
 from TD3_based_DRL.network_model import Actor,Critic
 from TD3_based_DRL.util import hard_update, soft_update
 
