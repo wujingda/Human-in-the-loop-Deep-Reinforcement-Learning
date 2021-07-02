@@ -168,17 +168,20 @@ class DRL:
             
 
     def load_model(self, output):
+        
         if output is None: return
         self.actor.load_state_dict(torch.load('{}/actor.pkl'.format(output)))
         self.critic.load_state_dict(torch.load('{}/critic.pkl'.format(output)))
 
 
     def save_model(self, output):
+        
         torch.save(self.actor.state_dict(), '{}/actor.pkl'.format(output))
         torch.save(self.critic.state_dict(), '{}/critic.pkl'.format(output))
         
 
     def save(self, log_dir, epoch):
+        
         state = {'actor':self.actor.state_dict(), 'actor_target':self.actor_target.state_dict(),
                  'actor_optimizer':self.actor_optimizer.state_dict(), 
                  'critic':self.critic.state_dict(), 'critic_target':self.critic_target.state_dict(),
@@ -188,6 +191,7 @@ class DRL:
         
 
     def load(self, log_dir):
+        
         checkpoint = torch.load(log_dir)
         self.actor.load_state_dict(checkpoint['actor'])
         self.actor_target.load_state_dict(checkpoint['actor_target'])
