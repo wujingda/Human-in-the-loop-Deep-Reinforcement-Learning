@@ -1,9 +1,8 @@
 '''
 This algorithm is an IA-RL implementation based on an off-policy TD3 algorithm.
 To check the original IA-RL algorithm, which is based on the PPO, you can refer to https://arxiv.org/abs/1811.06187.
-Since TD3IARL is a baseline algorithm, the annotations are mostly omitted, please visit the HUGTD3.py for more details.
+Since TD3IARL is a baseline algorithm, the annotations are mostly omitted, please visit the TD3HUG.py for more details.
 '''
-
 import pickle
 import numpy as np
 
