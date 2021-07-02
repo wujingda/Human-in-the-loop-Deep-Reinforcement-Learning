@@ -70,11 +70,11 @@ class DRL:
 
         ## batched state, batched action, batched action from expert, batched intervention signal, batched reward, batched next state
         bs, ba, ba_e, bi, br, bs_ = self.retrive(batch_size)
-        bs = torch.tensor(bs, dtype=torch.float).reshape(batch_size, self.state_dim_height, self.state_dim_width).to(self.device).to(self.device)
+        bs = torch.tensor(bs, dtype=torch.float).reshape(batch_size, self.state_dim_height, self.state_dim_width).to(self.device)
         ba = torch.tensor(ba, dtype=torch.float).to(self.device).to(self.device)
         ba_e = torch.tensor(ba_e, dtype=torch.float).to(self.device).to(self.device)
         br = torch.tensor(br, dtype=torch.float).to(self.device).to(self.device)
-        bs_ = torch.tensor(bs_, dtype=torch.float).reshape(batch_size, self.state_dim_height, self.state_dim_width).to(self.device).to(self.device)
+        bs_ = torch.tensor(bs_, dtype=torch.float).reshape(batch_size, self.state_dim_height, self.state_dim_width).to(self.device)
 
         # initialize the loss variables
         loss_c, loss_a = 0
@@ -141,7 +141,7 @@ class DRL:
                 
     def choose_action(self,state):
 
-        state = torch.tensor(state,dtype=torch.float).reshape(self.state_dim_height, self.state_dim_width).to(self.device).to(self.device)
+        state = torch.tensor(state,dtype=torch.float).reshape(self.state_dim_height, self.state_dim_width).to(self.device)
         state = state.unsqueeze(0)
         
         action = self.actor.forward(state).detach()
