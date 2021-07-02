@@ -1,5 +1,6 @@
-''' This environment describe a fixed scene (area) to conduct end-to-end lateral control tasks
-    for the autonomous ego vehicle. (This environment is relative simple and is only for training)
+''' 
+This environment describe a fixed scene (area) to conduct end-to-end lateral control tasks
+for the autonomous ego vehicle. (This environment is relative simple and is only for training)
 '''
 
 import pygame
@@ -9,7 +10,11 @@ import numpy as np
 import math
 import cv2
 import sys
-### add your path of the CARLA simualtor
+'''
+add your path of the CARLA simulator, this script was originally run with CARLA(0.9.7), 
+some functions (e.g., carla.set_velocity()) have been removed in the newer CARLA, 
+please refer to CARLA official document for details if you want to run the script with a different version.
+'''
 sys.path.append('xxx/carla-0.9.X-py3.X-linux-x86_64.egg')
 
 import carla
