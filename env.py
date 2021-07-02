@@ -38,7 +38,10 @@ class scenario(object):
                  no_render=False, frame=25):
 
         self.observation_size = WIDTH * HEIGHT
+        self.width = WIDTH
+        self.height = HEIGHT
         self.action_size = 1
+        
 
         ## set the carla World parameters
         self.pedestrian = pedestrian
