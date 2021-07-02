@@ -11,9 +11,9 @@ import math
 import cv2
 import sys
 '''
-add your path of the CARLA simulator, this script was originally run with CARLA(0.9.7), 
-some functions (e.g., carla.set_velocity()) have been removed in the newer CARLA, 
-please refer to CARLA official document for details if you want to run the script with a different version.
+Add your path of the CARLA simulator below.
+This script was originally run with CARLA(0.9.7), some functions (e.g., carla.set_velocity()) have been removed in the newer CARLA. 
+Please refer to CARLA official documents for detail if you want to run the script with a different version.
 '''
 sys.path.append('xxx/carla-0.9.X-py3.X-linux-x86_64.egg')
 
@@ -34,8 +34,7 @@ y_bench = 200.0
 WIDTH, HEIGHT = 80, 45
 
 class scenario(object):
-    def __init__(self, random_spawn=True, pedestrian=False, 
-                 no_render=False, frame=25):
+    def __init__(self, random_spawn=True, pedestrian=False, no_render=False, frame=25):
 
         self.observation_size_width = WIDTH
         self.observation_size_height = HEIGHT
