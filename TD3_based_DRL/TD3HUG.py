@@ -65,7 +65,7 @@ class DRL:
     def learn(self, batch_size = BATCH_SIZE, epoch=0):
 
         ## batched state, batched action, batched action from expert, batched intervention signal, batched reward, batched next state
-        bs, ba, ba_e, bi, br, bs_ = self.retrive(batch_size)
+        bs, ba, ba_e, bi, br, bs_, tree_idx, ISweight = self.retrive(batch_size)
         bs = torch.tensor(bs, dtype=torch.float).reshape(batch_size, self.state_dim_height, self.state_dim_width).to(self.device)
         ba = torch.tensor(ba, dtype=torch.float).to(self.device)
         ba_e = torch.tensor(ba_e, dtype=torch.float).to(self.device)
@@ -85,7 +85,8 @@ class DRL:
             target_q = torch.min(target_q1,target_q2)
             y_expected = br + self.gamma * target_q    
         y_predicted1, y_predicted2 = self.critic.forward([bs,ba]) 
-        
+        errors = y_expected - y_predicted1
+
         ## update the critic
         critic_loss = nn.MSELoss()
         loss_critic = critic_loss(y_predicted1,y_expected)+critic_loss(y_predicted2,y_expected)
@@ -164,6 +165,8 @@ class DRL:
         loss_c = loss_critic.mean().item()
         
         self.itera += 1
+
+        self.memory.batch_update(tree_idx, abs(errors.detach().cpu().numpy()) )
         
         return loss_c, loss_a
 
@@ -172,7 +175,7 @@ class DRL:
     def pre_init_critic(self, batch_size=BATCH_SIZE):
         
         ## batched state, batched action, batched action from expert, batched intervention signal, batched reward, batched next state
-        bs, ba, ba_e, bi, br, bs_ = self.retrive(self.batch_size)
+        bs, ba, ba_e, bi, br, bs_, tree_idx, ISweight = self.retrive(self.batch_size)
         bs = torch.tensor(bs, dtype=torch.float).reshape(batch_size, self.state_dim_height, self.state_dim_width).to(self.device)
         ba = torch.tensor(ba, dtype=torch.float).to(self.device)
         ba_e = torch.tensor(ba_e, dtype=torch.float).to(self.device)
@@ -189,14 +192,16 @@ class DRL:
             target_q = torch.min(target_q1,target_q2)
             y_expected = br + self.gamma * target_q   
         y_predicted1, y_predicted2 = self.critic.forward([bs,ba])  
-        
+        errors = y_expected - y_predicted1
+
         ## update the critic
         critic_loss = nn.MSELoss()
         loss_critic = critic_loss(y_predicted1,y_expected)+critic_loss(y_predicted2,y_expected)
         self.critic_optimizers.zero_grad()
         loss_critic.backward()
         self.critic_optimizers.step()
-    
+
+        self.memory.batch_update(tree_idx, abs(errors.detach().cpu().numpy()))
 
     ## pre-initialization trick, train the actor before the formal learning process of DRL
     def pre_init_actor(self, batch_size=BATCH_SIZE):
@@ -246,7 +251,7 @@ class DRL:
         br = bt[:, -self.state_dim - 1: -self.state_dim]
         bs_ = bt[:, -self.state_dim:]
         ## batched state, batched action, batched action from expert, batched intervention signal, batched reward, batched next state
-        return bs, ba, ba_e, bi, br, bs_
+        return bs, ba, ba_e, bi, br, bs_, tree_index, ISweight
     
 
     def memory_save(self):
@@ -292,11 +297,3 @@ class DRL:
         self.critic_target.load_state_dict(checkpoint['critic_target'])
         self.critic_optimizers.load_state_dict(checkpoint['critic_optimizers'])
     
-
-        
-        
-        
-        
-        
-        
-        
