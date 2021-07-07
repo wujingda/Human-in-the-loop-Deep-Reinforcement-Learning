@@ -167,7 +167,7 @@ for i in range(start_epoch, MAX_EPISODES):
 
         ## Section reward shaping ##
         # intervention penalty-based shaping
-        elif REWARD_SHAPING == 1:
+        if REWARD_SHAPING == 1:
             # only the 1st intervened time step is penalized
             if (action_fdbk is not None) or (pid_guide is True):
                 if step_intervene == 0:
