@@ -53,7 +53,7 @@ s_dim = [env.observation_size_width, env.observation_size_height]
 a_dim = env.action_size
 DRL = DRL(a_dim, s_dim)
 
- if PRE_INIT_CRITIC:
+if PRE_INIT_CRITIC:
      DRL.memory_load()
      for _ in range(10000):
          DRL.pre_init_critic()
