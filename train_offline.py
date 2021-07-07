@@ -58,6 +58,7 @@ if PRE_INIT_CRITIC:
      for _ in range(10000):
          DRL.pre_init_critic()
 
+start_epoch = 0
 if os.path.exists(log_dir) and LOAD:
     checkpoint = torch.load(log_dir)
     DRL.load(log_dir)
@@ -69,7 +70,6 @@ var = 0.5  # initial exploration rate
 # initialize measurable variables
 total_step = 0
 a_loss,c_loss = 0,0
-start_epoch = 0
 
 loss_critic, loss_actor = [], []
 
