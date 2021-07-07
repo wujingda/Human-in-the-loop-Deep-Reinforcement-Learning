@@ -16,13 +16,13 @@ torch.manual_seed(seed)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
-### Import CARLA environment
+# import CARLA environment
 from env import scenario
 
 from utils import signal_handler, get_path, RND
 rnd = RND()
 
-### Arguments
+# arguments
 MAX_EPISODES = 1500 
 MAX_STEPS = 5e4
 LOAD = 0
@@ -31,7 +31,7 @@ REWARD_SHAPING = 1
 PRE_EXPLORATION = 1
 PRE_INIT_CRITIC = 0
 
-### Construct the DRL agent
+# construct the DRL agent
 device = torch.device('cuda') if torch.cuda.is_available() else ('cpu')
 algorithm = 0
 
@@ -66,7 +66,7 @@ if os.path.exists(log_dir) and LOAD:
 var = 0.5  # initial exploration rate
 
 
-### Initialize measurable variables
+# initialize measurable variables
 total_step = 0
 a_loss,c_loss = 0,0
 start_epoch = 0
