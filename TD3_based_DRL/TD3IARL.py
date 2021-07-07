@@ -1,8 +1,9 @@
 '''
-This algorithm is an IA-RL implementation based on an off-policy TD3 algorithm.
-To check the original IA-RL algorithm, which is based on the PPO, you can refer to https://arxiv.org/abs/1811.06187.
-Since TD3IARL is a baseline algorithm, the annotations are mostly omitted, please visit the TD3HUG.py for more details.
+This algorithm is a IA-RL implementation on off-policy TD3 algorithm, to check the original IA-RL algorithm
+you can refer to https://arxiv.org/abs/1811.06187.
+Since it is a baseline algorithm, the descriptions are mostly omitted, please visit the HUGTD3.py for more implementation details
 '''
+
 import pickle
 import numpy as np
 
@@ -68,7 +69,7 @@ class DRL:
     def learn(self, batch_size = BATCH_SIZE, epoch=0):
 
         ## batched state, batched action, batched action from expert, batched intervention signal, batched reward, batched next state
-        bs, ba, ba_e, bi, br, bs_ = self.retrive(batch_size)
+        bs, ba, ba_e, bi, br, bs_, tree_idx, ISweight = self.retrive(batch_size)
         bs = torch.tensor(bs, dtype=torch.float).reshape(batch_size, self.state_dim_height, self.state_dim_width).to(self.device)
         ba = torch.tensor(ba, dtype=torch.float).to(self.device).to(self.device)
         ba_e = torch.tensor(ba_e, dtype=torch.float).to(self.device).to(self.device)
@@ -134,7 +135,9 @@ class DRL:
         loss_c = loss_critic.mean().item()
         
         self.itera += 1
-        
+
+        self.memory.batch_update(tree_idx, abs(errors.detach().cpu().numpy()) )
+
         return loss_c, loss_a
     
                 
@@ -165,7 +168,7 @@ class DRL:
         br = bt[:, -self.state_dim - 1: -self.state_dim]
         bs_ = bt[:, -self.state_dim:]
         
-        return bs, ba, ba_e, bsup, br, bs_
+        return bs, ba, ba_e, bi, br, bs_, tree_index, ISweight
     
 
     def memory_save(self):
