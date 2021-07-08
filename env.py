@@ -133,7 +133,7 @@ class scenario(object):
         if self.random_spawn:
             y_spawn_random = np.random.randint(200, 240)
             random_lateral_disturb = 0.1 * (np.random.rand()-0.5)
-            x_spwan_random = path_generator(y_spawn) + random_lateral_disturb
+            x_spwan_random = path_generator(y_spawn_random) + random_lateral_disturb
             self.bp_ego, self.spawn_point_ego = self._produce_vehicle_blueprint(1, x_spwan_random, y_spawn_random)
         else:
             self.bp_ego, self.spawn_point_ego = self._produce_vehicle_blueprint(1 , x_bench, y_bench)
