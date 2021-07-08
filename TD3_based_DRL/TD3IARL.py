@@ -89,6 +89,7 @@ class DRL:
             target_q = torch.min(target_q1,target_q2)
             y_expected = br + self.gamma * target_q    
         y_predicted1, y_predicted2 = self.critic.forward([bs,ba]) 
+        errors = y_expected - y_predicted1
         
         ## update the critic
         critic_loss = nn.MSELoss()
