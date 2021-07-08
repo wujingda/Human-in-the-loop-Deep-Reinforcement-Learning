@@ -116,7 +116,7 @@ class DRL:
                     with torch.no_grad():
                         # calculate the Q advantage weights
                         weights = torch.exp( self.critic_target([bs2,ba2])[0] - self.critic_target([bs2,pred_a2])[0])
-                        weights = torch.max(weights, 1)
+                        weights[weights > 1] = 1
                         weights = weights - 1
 
                         # calculate the final weights
@@ -135,7 +135,7 @@ class DRL:
                     with torch.no_grad():
                         # calculate the Q advantage weights
                         weights = torch.exp( self.critic_target([bs,ba])[0] - self.critic_target([bs,pred_a])[0])
-                        weights = torch.max(weights, 1)
+                        weights[weights > 1] = 1
                         weights = weights - 1
 
                         # calculate the final weights
