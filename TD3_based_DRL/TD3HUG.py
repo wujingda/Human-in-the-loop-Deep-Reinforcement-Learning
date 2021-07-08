@@ -251,7 +251,7 @@ class DRL:
         br = bt[:, -self.state_dim - 1: -self.state_dim]
         bs_ = bt[:, -self.state_dim:]
         ## batched state, batched action, batched action from expert, batched intervention signal, batched reward, batched next state
-        return bs, ba, ba_e, bi, br, bs_, tree_index, ISweight
+        return bs, ba, ba_e, bi, br, bs_, tree_index, ISWeight
     
 
     def memory_save(self):
