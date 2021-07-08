@@ -102,7 +102,7 @@ env = scenario(random_spawn = False)
 start_time = time.perf_counter()
 
 for i in range(start_epoch, MAX_EPISODES):
-
+    reward = 0
     ep_reward = 0      
     step = 0
     step_intervene = 0
