@@ -77,7 +77,7 @@ class DRL:
         bs_ = torch.tensor(bs_, dtype=torch.float).reshape(batch_size, self.state_dim_height, self.state_dim_width).to(self.device)
 
         # initialize the loss variables
-        loss_c, loss_a = 0
+        loss_c, loss_a = 0, 0
 
         ## calculate the predicted values of the critic
         with torch.no_grad():
@@ -168,7 +168,7 @@ class DRL:
         br = bt[:, -self.state_dim - 1: -self.state_dim]
         bs_ = bt[:, -self.state_dim:]
         
-        return bs, ba, ba_e, bi, br, bs_, tree_index, ISweight
+        return bs, ba, ba_e, bi, br, bs_, tree_index, ISWeight
     
 
     def memory_save(self):
