@@ -165,7 +165,7 @@ class DRL:
         bs = bt[:, :self.state_dim]
         ba = bt[:, self.state_dim: self.state_dim + self.action_dim]
         ba_e = bt[:, self.state_dim + self.action_dim: self.state_dim + self.action_dim + self.action_dim]
-        bsup = bt[:, -self.state_dim - 2: -self.state_dim - 1]
+        bi = bt[:, -self.state_dim - 2: -self.state_dim - 1]
         br = bt[:, -self.state_dim - 1: -self.state_dim]
         bs_ = bt[:, -self.state_dim:]
         
