@@ -18,6 +18,7 @@ torch.backends.cudnn.benchmark = False
 
 # import CARLA environment
 from env import scenario
+env = scenario()
 
 from utils import signal_handler, get_path, RND
 rnd = RND()
@@ -35,7 +36,7 @@ PRE_INIT_CRITIC = 0
 device = torch.device('cuda') if torch.cuda.is_available() else ('cpu')
 algorithm = 0
 
-from TD3_based_DRL.Priority_Replay import Memory
+from TD3_based_DRL.priority_replay import Memory
 if algorithm == 0:
     from TD3_based_DRL.TD3HUG import DRL
     log_dir = 'TD3_based_DRL/checkpoints/TD3jingda.pth'
