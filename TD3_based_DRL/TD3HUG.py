@@ -73,7 +73,7 @@ class DRL:
         bs_ = torch.tensor(bs_, dtype=torch.float).reshape(batch_size, self.state_dim_height, self.state_dim_width).to(self.device)
 
         # initialize the loss variables
-        loss_c, loss_a = 0
+        loss_c, loss_a = 0, 0
 
         ## calculate the predicted values of the critic
         with torch.no_grad():
