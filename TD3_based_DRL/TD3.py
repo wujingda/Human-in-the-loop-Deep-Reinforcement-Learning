@@ -51,12 +51,12 @@ class DRL:
         self.pointer = 0
         self.memory = Memory(MEMORY_CAPACITY)
         
-        self.actor = Actor(self.state_dim,self.action_dim)
-        self.actor_target = Actor(self.state_dim,self.action_dim)
+        self.actor = Actor(self.state_dim,self.action_dim).to(self.device)
+        self.actor_target = Actor(self.state_dim,self.action_dim).to(self.device)
         self.actor_optimizer = torch.optim.Adam(self.actor.parameters(),LR_A)
         
-        self.critic = Critic(self.state_dim,self.action_dim)
-        self.critic_target = Critic(self.state_dim,self.action_dim)
+        self.critic = Critic(self.state_dim,self.action_dim).to(self.device)
+        self.critic_target = Critic(self.state_dim,self.action_dim).to(self.device)
         self.critic_optimizers = torch.optim.Adam(self.critic.parameters(),LR_C)
         
         hard_update(self.actor_target,self.actor)
