@@ -189,6 +189,7 @@ for i in range(start_epoch, MAX_EPISODES):
         # no shaping
         else:
             reward_i = 0
+        reward = reward_e + reward_i
         ## End of Section reward shaping ##
 
 
@@ -240,7 +241,6 @@ for i in range(start_epoch, MAX_EPISODES):
         ## End of Section DRL update ##
 
 
-        reward = reward_e + reward_i
         ep_reward += reward
         global_reward_list.append([reward_e,reward_i])
         reward_e_record[i].append(reward_e)
