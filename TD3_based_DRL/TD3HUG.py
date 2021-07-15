@@ -120,11 +120,12 @@ class DRL:
                         weights = weights - 1
 
                         # calculate the final weights
-                        lam = 0.997 ** epoch # lambda is the soft update coefficient
-                        weights = lam * 3 + (1-lam) * (weights) * 3
+                        delay = 0.997 ** epoch # soft update coefficient
+                        weights = delay * 3 + (1-delay) * (weights) * 3
                     
                     # calculate the human-guidance loss
-                    loss_actor2 = weights * ((pred_a2 - ba2)**2)
+                    lam = 0.997 ** epoch # episodic fading factor
+                    loss_actor2 = lam * weights * ((pred_a2 - ba2)**2)
 
                     # calculate the final loss
                     loss_actor = torch.cat((loss_actor1,loss_actor2),0).mean()
@@ -139,11 +140,12 @@ class DRL:
                         weights = weights - 1
 
                         # calculate the final weights
-                        lam = 0.997 ** epoch # lambda is the soft update coefficient
-                        weights = lam * 3 + (1-lam) * (weights) * 3
+                        delay = 0.997 ** epoch # soft update coefficient
+                        weights = delay * 3 + (1-delay) * (weights) * 3
                     
                     # calculate the final loss
-                    loss_actor = weights * ((pred_a - ba)**2)
+                    lam = 0.997 ** epoch # episodic fading factor
+                    loss_actor = lam * weights * ((pred_a - ba)**2)
                     loss_actor = loss_actor.mean()
             
             ## if there does not exist human intervention steps
