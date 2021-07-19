@@ -5,7 +5,7 @@ This is a code repository for the paper "Human-in-the-Loop Deep Reinforcement Le
 [**Human-in-the-Loop Deep Reinforcement Learning with Application to Autonomous Driving**](https://arxiv.org/abs/2104.07246) 
 > Jingda Wu, Zhiyu Huang, Chao Huang, Zhongxu Hu, Peng Hang, Yang Xing, Chen Lv
 
-## Getting start
+## Getting started
 1. Install the CARLA simulator (0.9.7), with referring to
 https://carla.readthedocs.io/en/latest/start_quickstart/#a-debian-carla-installation
 
