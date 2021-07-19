@@ -70,7 +70,7 @@ class scenario(object):
         settings = self.world.get_settings()
         settings.fixed_delta_seconds = 1/frame
         settings.no_rendering_mode = self.no_render
-        settings.SynchronousMode = True
+        settings.synchronous_mode = True
         self.world.apply_settings(settings)
         
         ## initialize the pygame settings
