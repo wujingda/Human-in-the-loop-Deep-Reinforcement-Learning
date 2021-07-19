@@ -18,6 +18,7 @@ class SumTree(object):
         self.data = np.zeros(capacity, dtype=object)  # for all transitions
         # [--------------data frame-------------]
         #             size: capacity
+        self.total_n = 0
 
     def add(self, p, data):
         tree_idx = self.data_pointer + self.capacity - 1
@@ -27,6 +28,7 @@ class SumTree(object):
         self.data_pointer += 1
         if self.data_pointer >= self.capacity:  # replace when exceed the capacity
             self.data_pointer = 0
+        self.total_n += 1
 
     def update(self, tree_idx, p):
         change = p - self.tree[tree_idx]
@@ -70,16 +72,16 @@ class SumTree(object):
         return self.tree[0]  # the root
 
 
-class Memory(object): 
+class Memory(object):  # stored as ( s, a, r, s_ ) in SumTree
     """
     This SumTree code is modified version and the original code is from:
     https://github.com/jaara/AI-blog/blob/master/Seaquest-DDQN-PER.py
     """
-    epsilon = 0.01  # small amount to avoid zero priority
+    epsilon = 0.001  # small amount to avoid zero priority
     alpha = 0.6  # [0~1] convert the importance of TD error to priority
     beta = 0.4  # importance-sampling, from initial value increasing to 1
     beta_increment_per_sampling = 0.001
-    abs_err_upper = 1.  # clipped abs error
+    abs_err_upper = 10.  # clipped abs error
 
     def __init__(self, capacity):
         self.tree = SumTree(capacity)
@@ -95,13 +97,24 @@ class Memory(object):
         pri_seg = self.tree.total_p / n       # priority segment
         self.beta = np.min([1., self.beta + self.beta_increment_per_sampling])  # max = 1
 
-        min_prob = np.min(self.tree.tree[-self.tree.capacity:]) / self.tree.total_p     # for later calculate ISweight
+        nonzeros = self.tree.tree[-self.tree.capacity:]
+        pointer = self.tree.data_pointer -1 if self.tree.total_n<self.tree.capacity else self.tree.capacity-1
+        nonzeros = nonzeros[:pointer]
+        min_prob = max(np.min(nonzeros) / self.tree.total_p, self.epsilon)
+
+        # min_prob = np.min(self.tree.tree[-self.tree.capacity:]) / self.tree.total_p     # for later calculate ISweight
         for i in range(n):
             a, b = pri_seg * i, pri_seg * (i + 1)
+            p = 0
             v = np.random.uniform(a, b)
             idx, p, data = self.tree.get_leaf(v)
+            while p==0:
+                v = v-1
+                idx, p, data = self.tree.get_leaf(v)
             prob = p / self.tree.total_p
             ISWeights[i, 0] = np.power(prob/min_prob, -self.beta)
+            # if ISWeights[i, 0] == 0 or np.isnan(ISWeights[i,0]) or np.isinf(ISWeights[i,0]):
+            #     ISWeights[i, 0] = 1
             b_idx[i], b_memory[i, :] = idx, data
         return b_idx, b_memory, ISWeights
 
