@@ -30,4 +30,4 @@ Eprint = {arXiv:2104.07246},
 ```
 
 ## License
-This repo is released under MIT License.
+This repo is released under GNU GPLv3 License.
