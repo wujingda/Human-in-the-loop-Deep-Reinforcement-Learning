@@ -21,11 +21,13 @@ python train_offline.py
 ## Reference
 If you find this repo to be useful in your research, please consider citing our work
 ```
-@misc{2104.07246,
-Author = {Jingda Wu and Zhiyu Huang and Chao Huang and Zhongxu Hu and Peng Hang and Yang Xing and Chen Lv},
-Title = {Human-in-the-Loop Deep Reinforcement Learning with Application to Autonomous Driving},
-Year = {2021},
-Eprint = {arXiv:2104.07246},
+@article{WU2022,
+title = {Toward human-in-the-loop AI: Enhancing deep reinforcement learning via real-time human guidance for autonomous driving},
+journal = {Engineering},
+year = {2022},
+issn = {2095-8099},
+doi = {https://doi.org/10.1016/j.eng.2022.05.017},
+author = {Jingda Wu and Zhiyu Huang and Zhongxu Hu and Chen Lv},
 }
 ```
 
