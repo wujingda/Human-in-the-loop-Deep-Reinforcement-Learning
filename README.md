@@ -2,8 +2,8 @@
 
 This repo is the implementation of the paper "Human-in-the-Loop Deep Reinforcement Learning with Application to Autonomous Driving".
 
-[**Human-in-the-Loop Deep Reinforcement Learning with Application to Autonomous Driving**](https://arxiv.org/abs/2104.07246) 
-> Jingda Wu, Zhiyu Huang, Chao Huang, Zhongxu Hu, Peng Hang, Yang Xing, Chen Lv
+[**Toward human-in-the-loop AI: Enhancing deep reinforcement learning via real-time human guidance for autonomous driving**](https://www.sciencedirect.com/science/article/pii/S2095809922004878) 
+> [Jingda Wu](https://scholar.google.com/citations?user=icu-ZFAAAAAJ&hl=en), [Zhiyu Huang]https://scholar.google.com/citations?user=aLZEVCsAAAAJ&hl=en, [Zhongxu Hu]https://scholar.google.com/citations?user=E02VCLEAAAAJ&hl=en, [Chen Lv](https://scholar.google.com/citations?user=UKVs2CEAAAAJ&hl=en) 
 
 ## Getting started
 1. Install the CARLA simulator (0.9.7), with referring to
