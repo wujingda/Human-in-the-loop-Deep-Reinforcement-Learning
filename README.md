@@ -1,6 +1,6 @@
 # Human-in-the-loop Deep Reinforcement Learning (Hug-DRL)
 
-This repo is the implementation of the paper "Human-in-the-Loop Deep Reinforcement Learning with Application to Autonomous Driving".
+This repo is the implementation of the paper "Toward human-in-the-loop AI: Enhancing deep reinforcement learning via real-time human guidance for autonomous driving".
 
 [**Toward human-in-the-loop AI: Enhancing deep reinforcement learning via real-time human guidance for autonomous driving**](https://www.sciencedirect.com/science/article/pii/S2095809922004878) 
 > [Jingda Wu](https://scholar.google.com/citations?user=icu-ZFAAAAAJ&hl=en), [Zhiyu Huang](https://scholar.google.com/citations?user=aLZEVCsAAAAJ&hl=en), [Zhongxu Hu](https://scholar.google.com/citations?user=E02VCLEAAAAJ&hl=en), [Chen Lv](https://scholar.google.com/citations?user=UKVs2CEAAAAJ&hl=en) 
