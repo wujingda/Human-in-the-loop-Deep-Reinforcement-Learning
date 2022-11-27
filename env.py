@@ -9,6 +9,7 @@ import collections
 import numpy as np
 import math
 import cv2
+import re
 import sys
 '''
 Add your path of the CARLA simulator below.
@@ -34,7 +35,7 @@ y_bench = 200.0
 WIDTH, HEIGHT = 80, 45
 
 class scenario(object):
-    def __init__(self, random_spawn=True, pedestrian=False, no_render=False, frame=25):
+    def __init__(self, random_spawn=False, pedestrian=False, no_render=False, frame=25):
 
         self.observation_size_width = WIDTH
         self.observation_size_height = HEIGHT
@@ -45,6 +46,7 @@ class scenario(object):
         self.pedestrian = pedestrian
         self.random_spawn = random_spawn
         self.no_render = no_render
+        self.frame = frame
 
         ## set the vehicle actors
         self.ego_vehicle = None
@@ -67,11 +69,6 @@ class scenario(object):
         
         ## build the CARLA world
         self.world = self.client.load_world('Town01')
-        settings = self.world.get_settings()
-        settings.fixed_delta_seconds = 1/frame
-        settings.no_rendering_mode = self.no_render
-        settings.synchronous_mode = True
-        self.world.apply_settings(settings)
         
         ## initialize the pygame settings
         pygame.init()
@@ -79,6 +76,7 @@ class scenario(object):
         pygame.joystick.init()
         self.display = pygame.display.set_mode((1280, 720),pygame.HWSURFACE | pygame.DOUBLEBUF)
         self.infoObject = pygame.display.Info()
+        pygame.display.set_caption('End-to-end Training')
 
         ## initilize the joystick settings
         self._joystick = pygame.joystick.Joystick(0)
@@ -92,10 +90,31 @@ class scenario(object):
         self._reverse_idx = int(self._parser.get('G29 Racing Wheel', 'reverse'))
         self._handbrake_idx = int(self._parser.get('G29 Racing Wheel', 'handbrake'))
 
-        self.restart()
+        # self.restart()
 
     def restart(self):
-
+        
+        self.original_settings = self.world.get_settings()
+        settings = self.world.get_settings()
+        
+        settings.synchronous_mode = False
+        settings.fixed_delta_seconds = 1/self.frame
+        # settings.no_rendering_mode = self.no_render
+        self.world.apply_settings(settings)
+        
+        # visualize the goal point
+        xxx = carla.Location()
+        xxx.x = x_bench
+        xxx.y = y_bench + 55.0
+        xxx.z = 1
+        self.world.debug.draw_point(xxx, size=0.1, color=carla.Color(r=255, g=0, b=0), life_time=1000)
+        
+        # generate the random weather
+        self._weather_presets = find_weather_presets()
+        self._weather_index = 0
+        preset = self._weather_presets[self._weather_index]
+        self.world.set_weather(preset[0])
+        
         ## reset the recording lists
         self.steer_history = []
         self.intervene_history = []
@@ -152,8 +171,6 @@ class scenario(object):
         self.collision_history = []
         bp_collision = self.world.get_blueprint_library().find('sensor.other.collision')
         # spawn the collision sensor actor
-        if self.collision_sensor is not None:
-            self.collision_sensor.destroy()
         self.collision_sensor = self.world.spawn_actor(
                 bp_collision, carla.Transform(), attach_to=self.ego_vehicle)
         # obtain the collision signal and append to the history list
@@ -212,6 +229,10 @@ class scenario(object):
         
         ## reset the step counter
         self.count = 0
+        
+        state, other_indicators = self.obtain_observation()
+        
+        return state, other_indicators
 
     
     def render(self, display):
@@ -371,12 +392,16 @@ class scenario(object):
                  }
         
         if done:
-            self.destroy()
+            self.post_process()
             
         return next_states, human_control, reward, self.intervention, done, physical_variables
     
 
     def destroy(self):
+        self.seman_camera.stop()
+        self.viz_camera.stop()
+        self.collision_sensor.stop()
+
         actors = [
             self.ego_vehicle,
             self.obs1,
@@ -385,11 +410,20 @@ class scenario(object):
             self.seman_camera,
             self.viz_camera,
             self.collision_sensor]
-        self.seman_camera.stop()
-        self.viz_camera.stop()
-        for actor in actors:
-            if actor is not None:
-                actor.destroy()
+        
+        self.client.apply_batch_sync([carla.command.DestroyActor(x) for x in actors])
+        
+        self.seman_camera = None
+        self.viz_camera = None
+        self.collision_sensor = None
+        self.ego_vehicle = None
+        
+    def post_process(self):
+        if self.original_settings:
+            self.world.apply_settings(self.original_settings)
+
+        if self.world is not None:
+            self.destroy()
 
 
     def obtain_observation(self):
@@ -502,7 +536,7 @@ class scenario(object):
         spawn_point = self.world.get_map().get_spawn_points()[0]
         spawn_point.location.x = x
         spawn_point.location.y = y
-        spawn_point.location.z += 0.1
+        spawn_point.location.z += 0.3
 
         return bp, spawn_point
     
@@ -550,8 +584,13 @@ class scenario(object):
     def _sigmoid(self,x,theta):
         return 2./(1+math.exp(-theta*x))-1
 
-        
 
+
+def find_weather_presets():
+    rgx = re.compile('.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)')
+    name = lambda x: ' '.join(m.group(0) for m in rgx.finditer(x))
+    presets = [x for x in dir(carla.WeatherParameters) if re.match('[A-Z].+', x)]
+    return [(getattr(carla.WeatherParameters, x), name(x)) for x in presets]
         
 
 
