@@ -19,7 +19,7 @@ python train_offline.py
 ```
 
 ## Training performance of different algorithms
-![](training_results.png)
+![](results.png)
 
 ## Reference
 If you find this repo to be useful in your research, please consider citing our work
