@@ -19,7 +19,8 @@ python train_offline.py
 ```
 
 ## Training performance of different algorithms
-![](results.png =100x100)
+
+<img src="results.png" width = "300" height = "200" alt=" " align=center />
 
 ## Reference
 If you find this repo to be useful in your research, please consider citing our work
