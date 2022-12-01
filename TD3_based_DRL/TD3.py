@@ -34,7 +34,8 @@ NOISE_CLIP = 0.5
 class DRL:
         
     def __init__(self,action_dim,state_dim, LR_C = LR_C, LR_A = LR_A):
-        self.use_cuda = True
+        
+        self.device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
         
         self.state_dim = state_dim[0] * state_dim[1]
         self.state_dim_width = state_dim[0]
@@ -85,6 +86,7 @@ class DRL:
             target_q = torch.min(target_q1,target_q2)
             y_expected = br + self.gamma * target_q   
         y_predicted1, y_predicted2 = self.critic.forward([bs,ba])    
+        errors = y_expected - y_predicted1
         
         ## update the critic
         critic_loss = nn.MSELoss()
